@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom";
 import "../../App.css";
-//import {useState} from "react";
+import {useState} from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const JobSeekerSignUpForm = () => {
   //const [clip, setClip] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  }
+
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  }
 
   let googleImg = "src/assets/Google.svg";
 
@@ -62,6 +75,98 @@ const JobSeekerSignUpForm = () => {
                   name="firstName"
                   id="firstName"
                   autoComplete="first-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Last Name
+              </label>
+              <div className="mt-1">
+                <input 
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  autoComplete="family-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Email Address
+              </label>
+              <div className="mt-1">
+                <input 
+                  type="email"
+                  name="email"
+                  id="email"
+                  autoComplete="email"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Password
+              </label>
+              <div className="mt-1">
+                <input 
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  autoComplete="password"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                <span className="password-toggle" onClick={handleTogglePassword}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+
+                </span>
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Confirm Password
+              </label>
+              <div className="mt-1">
+                <input 
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  autoComplete="password"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                <span className="password-toggle" onClick={handleToggleConfirmPassword}>
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+
+                </span>
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Address
+              </label>
+              <div className="mt-1">
+                <input 
+                  type="text"
+                  name="address"
+                  id="address"
+                  autoComplete="address"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3 sm:col-start-1">
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                Phone Number
+              </label>
+              <div className="mt-1">
+                <input 
+                  type="number"
+                  name="phoneNumber"
+                  id="tel"
+                  autoComplete="tel"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
