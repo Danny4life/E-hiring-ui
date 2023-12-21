@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../App.css";
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import SweetAlert from "../utils/SweetAlert";
+import { ClipLoader } from "react-spinners";
 
 const JobSeekerSignUpForm = () => {
   const [countries, setCountries] = useState([]);
@@ -20,9 +23,31 @@ const JobSeekerSignUpForm = () => {
       .catch((error) => console.error("Error fetching countries", error));
   }, []);
 
-  //const [clip, setClip] = useState(false);
+  const [clip, setClip] = useState(false);
+
+  const [blur, setBlur] = useState("");
+
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phoneNumber: "",
+    gender: "MALE",
+    dateOfBirth: "",
+    country: "",
+    address: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -30,6 +55,55 @@ const JobSeekerSignUpForm = () => {
 
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  // create chat api here
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setClip(true);
+      setBlur("opacity-[0.2]");
+
+      // Make API call to your Java backend to handle user registration
+      await axios
+        .post("http://localhost:8080/auth/job-seeker/register", formData)
+        .then((result) => {
+          SweetAlert(
+            "Success",
+            "Registration successful",
+            "Your Registration is Successful, Please proceed to confirm your Email",
+            3000
+          );
+          setTimeout(() => {
+            setClip(false);
+
+            setBlur("");
+            navigate("/login");
+          }, 3000);
+
+          // add chatreg here
+
+          console.log(result.data);
+        });
+
+      console.log("User registered successfully!");
+    } catch (error) {
+      setClip(false);
+
+      SweetAlert(
+        "error",
+        "Opps!",
+        "Something went wrong, Please check your inputs and try again",
+        3000
+      );
+
+      setTimeout(() => {
+        setBlur("");
+      }, 3000);
+      console.error("Registration failed:", error.message);
+    }
   };
 
   let googleImg = "src/assets/Google.svg";
@@ -50,11 +124,19 @@ const JobSeekerSignUpForm = () => {
           className="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
         />
       </Link>
-      {/* { clip &&
-                <ClipLoader color="#36D7B7" loading={true} size={100} className="absolute right-[46.5vw] top-[44vh]" />
-            } */}
+      {clip && (
+        <ClipLoader
+          color="#36D7B7"
+          loading={true}
+          size={100}
+          className="absolute right-[46.5vw] top-[44vh]"
+        />
+      )}
       <div className={`register-cont ${blur}`}>
-        <form className="register-form py-[2rem] my-[3rem]">
+        <form
+          onSubmit={handleSubmit}
+          className="register-form py-[2rem] my-[3rem]"
+        >
           <div>
             <div className="top">
               <div className="logo">
@@ -90,7 +172,7 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="text"
                   name="firstName"
-                  //onChange={handleChange}
+                  onChange={handleChange}
                   id="firstName"
                   autoComplete="first-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -108,7 +190,7 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="text"
                   name="lastName"
-                 // onChange={handleChange}
+                  onChange={handleChange}
                   id="lastName"
                   autoComplete="family-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -126,7 +208,7 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="email"
                   name="email"
-                 // onChange={handleChange}
+                  onChange={handleChange}
                   id="email"
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -145,8 +227,8 @@ const JobSeekerSignUpForm = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
-                 // value={formData.password}
-                 // onChange={handleChange}
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                   autoComplete="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -171,8 +253,8 @@ const JobSeekerSignUpForm = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   id="confirmPassword"
-                 // value={formData.confirmPassword}
-                 // onChange={handleChange}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   required
                   autoComplete="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -196,7 +278,7 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="text"
                   name="address"
-                 // onChange={handleChange}
+                  onChange={handleChange}
                   id="address"
                   autoComplete="address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -214,8 +296,8 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="number"
                   name="phoneNumber"
-                 // value={formData.phoneNumber}
-                 // onChange={handleChange}
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
                   id="tel"
                   autoComplete="tel"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -233,7 +315,7 @@ const JobSeekerSignUpForm = () => {
                 <select
                   id="gender"
                   name="gender"
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   autoComplete="gender"
                   required
                   className="select-tab block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
@@ -254,8 +336,8 @@ const JobSeekerSignUpForm = () => {
                 <select
                   id="country"
                   name="country"
-                  // value={formData.country}
-                  // onChange={handleChange}
+                  value={formData.country}
+                  onChange={handleChange}
                   autoComplete="country-name"
                   required
                   className="select-tab block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
@@ -288,8 +370,8 @@ const JobSeekerSignUpForm = () => {
                 <input
                   type="date"
                   name="dateOfBirth"
-                  // value={formData.dateOfBirth}
-                  //onChange={handleChange}
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
                   id="date"
                   autoComplete="date"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
