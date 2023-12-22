@@ -110,7 +110,7 @@ const JobSeekerSignUpForm = () => {
 
   return (
     <div>
-      <Link
+      {/* <Link
         to="/"
         className="fixed bg-black top-[3rem] right-[1rem] cursor-pointer hover:bg-blue-500 justify-between 
             items-stretch border-[color:var(--blue-600,#2563EB)] self-stretch flex gap-4 pl-7 pr-3 py-3 rounded-lg border-2 border-solid max-md:pl-5 my-auto max-h-[3rem]"
@@ -123,7 +123,7 @@ const JobSeekerSignUpForm = () => {
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/5062df1f-67ac-469a-801d-d6350c5b260d?"
           className="aspect-square object-contain object-center w-6 overflow-hidden shrink-0 max-w-full"
         />
-      </Link>
+      </Link> */}
       {clip && (
         <ClipLoader
           color="#36D7B7"
@@ -401,7 +401,7 @@ const JobSeekerSignUpForm = () => {
                   style={{ color: "#2F80ED" }}
                 >
                   {" "}
-                  Log in here
+                  Log in
                 </Link>
               </h3>
             </div>
