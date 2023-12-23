@@ -5,7 +5,7 @@ const SignupSelect = () => {
   return (
     <div className="fixed w-[100vw] h-[100vh] flex items-center justify-center z-10">
       <div
-        className={`absolute w-[100vw] h-[102vh] justify-center align-center bg-black opacity-[0.9]`}
+        className={`absolute w-[100vw] h-[102vh] justify-center align-center bg-black opacity-[0.15]`}
         style={{ zIndex: 2 }}
       ></div>
       <div
