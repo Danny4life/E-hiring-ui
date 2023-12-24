@@ -5,6 +5,8 @@ import JobSeekerSignUpForm from "./components/authentication/JobSeekerSignUpForm
 import LandingPage from "./components/pages/landing-page/LandingPage";
 import LoginPage from "./components/authentication/LoginPage";
 import EmployerSignupForm from "./components/authentication/EmployerSignupForm";
+import EmployerPage from "./components/pages/EmployerPage";
+import JobSeekerPage from "./components/pages/JobSeekerPage";
 
 function App() {
 
@@ -21,6 +23,11 @@ function App() {
           <Route path="/job-seeker-signup" element={<JobSeekerSignUpForm />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/employer-signup" element={<EmployerSignupForm />} />
+          <Route path="/employer-page" element={<EmployerPage />} />
+          <Route path="/jobseeker-page" element={<JobSeekerPage />} />
+
+
+
 
         </Routes>
       </BrowserRouter>
