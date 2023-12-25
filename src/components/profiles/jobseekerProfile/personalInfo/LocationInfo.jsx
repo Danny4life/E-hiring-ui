@@ -1,67 +1,49 @@
-import { ClipLoader } from "react-spinners";
-import { useState } from "react";
 import axios from "axios";
-import SweetAlert from "../../utils/SweetAlert";
+import {useState} from "react";
+import SweetAlert from "../../../utils/SweetAlert";
 
-const EmployerContactInfo = ({ userData, setDep }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const [contactInfo, setContactInfo] = useState({
-    firstName: `${userData.firstName}`,
-    lastName: `${userData.lastName}`,
-    phoneNumber: `${userData.phoneNumber}`,
+const LocationInfo = ({ setDep, userData }) => {
+  const [formData, setFormData] = useState({
+    address: `${userData.address}`,
+    state: `${userData.state}`,
+    city: `${userData.city}`,
     postalCode: `${userData.postalCode}`,
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const submitForm = async () => {
-      try {
-        setIsVisible(true);
-
-        await axios
-          .put(
-            "http://localhost:8080/employer/update-profile-contact-info",
-            contactInfo,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          )
-          .then((response) => {
-            setIsVisible(false);
-
-            SweetAlert(
-              "success",
-              "Update Successful",
-              "Contact Info updated successfully",
-              1500
-            );
-
-            console.log(response.data.message);
-            setDep();
-          });
-      } catch (error) {
-        setIsVisible(false);
-
-        SweetAlert(
-          "error",
-          "Oops!",
-          "Something went wrong please try again",
-          2000
-        );
-
-        console.error("Error uploading resume:", error);
-      }
-    };
-
-    submitForm();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleChange = (e) => {
-    setContactInfo({ ...contactInfo, [e.target.name]: e.target.value });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios
+        .put("http://localhost:8080/job-seeker/update-profile/location-information", formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((result) => {
+          SweetAlert(
+            "success",
+            "Update Successful",
+            "Your Location information has been updated successfully"
+          );
+          console.log(result.data.data);
+        });
+
+      // Trigger the UseEffect in the JobSeeker Component to effect user's details
+      setDep();
+    } catch (error) {
+      SweetAlert(
+        "error",
+        "Oops!",
+        "Something went wrong please try again",
+        2000
+      );
+      console.log(error.message);
+    }
   };
 
   return (
@@ -71,38 +53,38 @@ const EmployerContactInfo = ({ userData, setDep }) => {
     >
       <div className="items-end flex grow flex-col max-md:max-w-full max-md:mt-10">
         <div className="relative top-2 text-blue-500 text-sm leading-5 tracking-normal whitespace-nowrap flex justify-start items-stretch bg-white self-start w-fit px-1 mx-4">
-          Full Name
+          Address
         </div>
         <input
           type="text"
-          name="firstName"
-          placeholder=""
-          value={contactInfo.firstName}
+          name="address"
+          value={formData.address}
           onChange={handleChange}
+          placeholder="Address"
           className="text-black text-base leading-6 tracking-normal whitespace-nowrap rounded border border-[color:var(--Blue-1,#2F80ED)] self-stretch px-4 py-2.5 border-solid max-md:max-w-full"
         />
 
         <div className="relative top-2 text-blue-500 text-sm leading-5 tracking-normal whitespace-nowrap flex justify-start items-stretch bg-white self-start w-fit px-1 mx-4 mt-5">
-          Last Name
+          City
         </div>
         <input
           type="text"
-          name="lastName"
-          placeholder=""
-          value={contactInfo.lastName}
+          name="city"
+          value={formData.city}
           onChange={handleChange}
+          placeholder="City"
           className="text-black text-base leading-6 tracking-normal whitespace-nowrap rounded border border-[color:var(--Blue-1,#2F80ED)] self-stretch px-4 py-2.5 border-solid max-md:max-w-full"
         />
 
         <div className="relative top-2 text-blue-500 text-sm leading-5 tracking-normal whitespace-nowrap flex justify-start items-stretch bg-white self-start w-fit px-1 mx-4 mt-5">
-          Phone Number
+          State
         </div>
         <input
-          type="tel"
-          name="phoneNumber"
-          placeholder=""
-          value={contactInfo.phoneNumber}
+          type="text"
+          name="state"
+          value={formData.state}
           onChange={handleChange}
+          placeholder="State"
           className="text-black text-base leading-6 tracking-normal whitespace-nowrap rounded border border-[color:var(--Blue-1,#2F80ED)] self-stretch px-4 py-2.5 border-solid max-md:max-w-full"
         />
 
@@ -110,24 +92,23 @@ const EmployerContactInfo = ({ userData, setDep }) => {
           Postal Code
         </div>
         <input
-          type="tel"
+          type="text"
           name="postalCode"
-          placeholder=""
-          value={contactInfo.postalCode}
+          value={formData.postalCode}
           onChange={handleChange}
+          placeholder="Post Code"
           className="text-black text-base leading-6 tracking-normal whitespace-nowrap rounded border border-[color:var(--Blue-1,#2F80ED)] self-stretch px-4 py-2.5 border-solid max-md:max-w-full"
         />
 
-        <button
+        <input
           type="submit"
+          name="submit"
+          value="Save Changes"
           className="text-white text-base font-semibold leading-6 tracking-normal whitespace-nowrap justify-center items-stretch bg-blue-500 w-fit max-w-full mt-8 px-4 py-2 rounded-xl self-end cursor-pointer"
-        >
-          Update Profile
-          {isVisible && <ClipLoader color="#36D7B7" loading={true} size={23} />}
-        </button>
+        />
       </div>
     </form>
   );
 };
 
-export default EmployerContactInfo;
+export default LocationInfo;

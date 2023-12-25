@@ -7,6 +7,7 @@ import LoginPage from "./components/authentication/LoginPage";
 import EmployerSignupForm from "./components/authentication/EmployerSignupForm";
 import EmployerPage from "./components/pages/EmployerPage";
 import JobSeekerPage from "./components/pages/JobSeekerPage";
+import JobPostForOneCompany from "./components/findjobposts/JobPostForOneCompany";
 
 function App() {
 
@@ -25,10 +26,7 @@ function App() {
           <Route path="/employer-signup" element={<EmployerSignupForm />} />
           <Route path="/employer-page" element={<EmployerPage />} />
           <Route path="/jobseeker-page" element={<JobSeekerPage />} />
-
-
-
-
+          <Route path="/jobs-one-company/:id" element={<JobPostForOneCompany/>}/>
         </Routes>
       </BrowserRouter>
     </>

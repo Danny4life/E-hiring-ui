@@ -5,7 +5,7 @@ import Panel from "../profileComponents/Panel";
 import EmployerCompanyInfo from "./EmployerCompanyInfo";
 import EmployerContactInfo from "./EmployerContactInfo";
 
-const EmployerProfile = () => {
+const EmployerProfile = ({ setDep, userData }) => {
   const [page, setPage] = useState("companyInfo");
 
   let icon1 =
@@ -34,47 +34,51 @@ const EmployerProfile = () => {
 
   return (
     <div className="bg-white flex flex-col items-stretch">
+      {changeAvatar && (
+        <ProfilePictureUpload handleChangeAvatar={handleChangeAvatar} />
+      )}
 
-        { changeAvatar &&
-            <ProfilePictureUpload
-                handleChangeAvatar={handleChangeAvatar}
-            />
-        }
+      <ProfileMidHeader
+        userData={userData}
+        handleChangeAvatar={handleChangeAvatar}
+      />
 
-        <ProfileMidHeader
-            userData={userData}
-            handleChangeAvatar={handleChangeAvatar}
-        />
+      <div className="self-center w-[872px] max-w-full mt-12 mb-14 max-md:my-10">
+        <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+          <div className="flex flex-col items-stretch w-[39%] max-md:w-full max-md:ml-0">
+            <div className="sticky top-[10rem] items-stretch flex flex-col px-2 py-1 max-md:mt-10">
+              <Panel
+                btnName="Company Information"
+                handleClick={companyInfo}
+                fontColor={
+                  page === "companyInfo" ? "text-blue-500" : "text-black-500"
+                }
+                imgDis={page === "companyInfo" ? icon3 : icon4}
+              />
 
-        <div className="self-center w-[872px] max-w-full mt-12 mb-14 max-md:my-10">
-            <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
-                <div className="flex flex-col items-stretch w-[39%] max-md:w-full max-md:ml-0">
-                    <div className="sticky top-[10rem] items-stretch flex flex-col px-2 py-1 max-md:mt-10">
-                        <Panel
-                            btnName="Company Information"
-                            handleClick={companyInfo}
-                            fontColor={ page === "companyInfo" ? "text-blue-500" : "text-black-500" }
-                            imgDis={ page === "companyInfo" ? icon3 : icon4}
-                        />
+              <hr className="max-w-[322px] my-2" />
 
-                        <hr className="max-w-[322px] my-2"/>
-
-                        <Panel
-                            btnName="Contact Information"
-                            handleClick={contactInfo}
-                            fontColor={ page === "contactInfo" ? "text-blue-500" : "text-black-500" }
-                            imgDis={ page === "contactInfo" ? icon2 : icon1 }
-                        />
-                    </div>
-                </div>
-
-                { page === "companyInfo" && <EmployerCompanyInfo userData={userData} setDep={setDep} /> }
-                { page === "contactInfo" && <EmployerContactInfo userData={userData} setDep={setDep} /> }
-
+              <Panel
+                btnName="Contact Information"
+                handleClick={contactInfo}
+                fontColor={
+                  page === "contactInfo" ? "text-blue-500" : "text-black-500"
+                }
+                imgDis={page === "contactInfo" ? icon2 : icon1}
+              />
             </div>
+          </div>
+
+          {page === "companyInfo" && (
+            <EmployerCompanyInfo userData={userData} setDep={setDep} />
+          )}
+          {page === "contactInfo" && (
+            <EmployerContactInfo userData={userData} setDep={setDep} />
+          )}
         </div>
+      </div>
     </div>
-);
-}
+  );
+};
 
 export default EmployerProfile;
